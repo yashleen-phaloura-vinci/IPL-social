@@ -1,17 +1,21 @@
-function passwordChecker(password) {
-  // Condition 1: Minimum 8 caractères
-  if (password.length < 8) return false;
+const passwordChecker = require("../passwordChecker");
 
-  // Condition 2: Minimum un caractère spécial
-  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) return false;
+test("mot de passe valide", () => {
+  expect(passwordChecker("Test@1234")).toBe(true);
+});
 
-  // Condition 3: Minimum un chiffre
-  if (!/[0-9]/.test(password)) return false;
+test("moins de 8 caractères", () => {
+  expect(passwordChecker("A@1")).toBe(false);
+});
 
-  // Condition 4: Pas de "IPL" (peu importe la casse)
-  if (/ipl/i.test(password)) return false;
+test("sans chiffre", () => {
+  expect(passwordChecker("Test@abcd")).toBe(false);
+});
 
-  return true;
-}
+test("sans caractère spécial", () => {
+  expect(passwordChecker("Test1234")).toBe(false);
+});
 
-module.exports = passwordChecker;
+test("contient IPL", () => {
+  expect(passwordChecker("Ipl@1234")).toBe(false);
+});
